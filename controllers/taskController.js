@@ -1,22 +1,14 @@
 const Task = require("../models/Task");
 
-// @desc    Get all tasks with filters and pagination
 exports.getTasks = async (req, res) => {
   try {
-    const { page = 1, limit = 10, priority, status, dueDate } = req.query;
+    const { page = 1, limit = 10 } = req.query;
 
-    let query = {};
-
-    // Apply filters
-    if (priority) query.priority = priority;
-    if (status) query.status = status;
-    if (dueDate) query.dueDate = new Date(dueDate);
-
-    const tasks = await Task.find(query)
+    const tasks = await Task.find()
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
-    const total = await Task.countDocuments(query);
+    const total = await Task.countDocuments();
 
     res.json({
       data: tasks,
@@ -40,23 +32,22 @@ exports.getTaskById = async (req, res) => {
 };
 
 exports.searchTasksByName = async (req, res) => {
-    try {
-      const { search } = req.query;
-  
-      if (!search) {
-        return res.status(400).json({ message: "Search query is required" });
-      }
-  
-      const tasks = await Task.find({
-        name: { $regex: search, $options: "i" }, 
-      });
-  
-      res.json(tasks);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+  try {
+    const { search } = req.query;
+
+    if (!search) {
+      return res.status(400).json({ message: "Search query is required" });
     }
-  };
-  
+
+    const tasks = await Task.find({
+      name: { $regex: search, $options: "i" },
+    });
+
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 exports.createTask = async (req, res) => {
   try {
@@ -71,7 +62,9 @@ exports.createTask = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!task) return res.status(404).json({ message: "Task not found" });
     res.json(task);
   } catch (err) {
