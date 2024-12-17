@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "app.js", 
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/app.js"
+      }
+    ],
+    "env": {
+      "MONGO_URI": "mongodb+srv://inshal:Inshal%40123@cluster0.mleb7.mongodb.net/task?retryWrites=true&w=majority",
+      "PORT": "5002"
+    }
+  }
+  
