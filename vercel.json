@@ -13,7 +13,7 @@
       }
     ],
     "env": {
-      "MONGO_URI": "mongodb+srv://<username>:<password>@cluster0.mongodb.net/task?retryWrites=true&w=majority",
+      "MONGO_URI": "mongodb+srv://inshal:Inshal%40123@cluster0.mleb7.mongodb.net/task?retryWrites=true&w=majority",
       "PORT": "3000"
     }
   }
